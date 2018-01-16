@@ -2,14 +2,7 @@ apply plugin: 'com.jfrog.bintray'
 
 version = libraryVersion
 
-/*
- * Comment the following part if you only want to distribute .aar files. 
- * (For example, your source code is obfuscated by Proguard and is not shown to outsite developers)
- * Without source code .jar files, you only can publish on bintray respository but not jcenter.
- */
-
-/*--------------------------------*/
-if (project.hasProperty("android")) {
+if (project.hasProperty("android")) { // Android libraries
     task sourcesJar(type: Jar) {
         classifier = 'sources'
         from android.sourceSets.main.java.srcDirs
@@ -35,7 +28,6 @@ artifacts {
     archives javadocJar
     archives sourcesJar
 }
-/*--------------------------------*/
 
 // Bintray
 Properties properties = new Properties()
@@ -50,7 +42,6 @@ bintray {
         repo = bintrayRepo
         name = bintrayName
         desc = libraryDescription
-        userOrg = organization   // If the repository is hosted by an organization instead of personal account.
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = allLicenses
@@ -59,8 +50,9 @@ bintray {
         version {
             desc = libraryDescription
             gpg {
-                sign = true
+                sign = true //Determines whether to GPG sign the files. The default is false
                 passphrase = properties.getProperty("bintray.gpg.password")
+                //Optional. The passphrase for GPG signing'
             }
         }
     }
